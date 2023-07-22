@@ -1,0 +1,69 @@
+import datetime
+
+def is_valid_string_input(prompt):
+    while True:
+        user_input = input(prompt).strip()
+        if not (isinstance(user_input, str) and len(user_input) != 0) or any(char.isdigit() for char in user_input) or ' ' in user_input:
+            print("Veuillez saisir une chaîne de caractères valide sans réponse vide, chiffres ni espace.")
+        else:
+            return user_input
+
+def get_integer_input(prompt):
+    while True:
+        try:
+            return int(input(prompt))
+        except ValueError:
+            print("Veuillez saisir un nombre entier valide.")
+
+def is_valid_date_format(date_string):
+    try:
+        datetime.datetime.strptime(date_string, '%d-%m-%Y')
+        return True
+    except ValueError:
+        return False
+
+def ajouter_passage():
+    livres_enregistres = []  # Liste pour stocker les informations sur les livres enregistrés
+
+    while True:
+        nom = is_valid_string_input("Quel est le nom du livre que vous venez de lire : ")
+        page = get_integer_input("Combien de pages a ce livre : ")
+        passage = is_valid_string_input("Quel passage vous a le plus marqué ? : ")
+
+        while True:
+            date = input("Quand avez-vous lu ce livre ? (jj-mois-année) : ")
+            if is_valid_date_format(date):
+                break
+            else:
+                print("Format de date incorrect. Veuillez saisir la date au format jj-mois-année.")
+
+        mot_cles = is_valid_string_input("Avez-vous un mot-clé concernant ce livre ? : ")
+
+        # Ajouter les informations du livre à la liste
+        livre_info = {
+            "Nom": nom,
+            "Pages": page,
+            "Passage marquant": passage,
+            "Date de lecture": date,
+            "Mot-clé": mot_cles
+        }
+        livres_enregistres.append(livre_info)
+
+        print("Passage ajouté avec succès.")
+
+        essai_plus = input("Voulez-vous enregistrer encore ? (oui/non) : ")
+        if essai_plus.lower() != "oui":
+            break
+
+    # Afficher les informations enregistrées
+    print("\nInformations enregistrées :")
+    for livre in livres_enregistres:
+        print("Livre :", livre["Nom"])
+        print("Pages :", livre["Pages"])
+        print("Passage marquant :", livre["Passage marquant"])
+        print("Date de lecture :", livre["Date de lecture"])
+        print("Mot-clé :", livre["Mot-clé"])
+        print("-" * 30)
+
+if __name__ == "__main__":
+    ajouter_passage()
